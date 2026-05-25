@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Register Student — Academia</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body class="page-register">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+
+    <div class="nav-inner">
+
+      <a href="index.html" class="nav-brand">
+        <span class="brand-icon">◈</span>
+        <span class="brand-name">Academia</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="index.html" class="nav-link active">
+          Register
+        </a>
+
+        <a href="dashboard.html" class="nav-link">
+          Dashboard
+        </a>
+      </div>
+
+    </div>
+
+  </nav>
+
+  <!-- Main -->
+  <main class="register-main">
+
+    <div class="register-layout">
+
+      <!-- Left Side -->
+      <aside class="register-aside">
+
+        <div class="aside-inner">
+
+          <h1 class="aside-headline">
+            Enrol a <em>new student</em>
+            into the system
+          </h1>
+
+          <p class="aside-sub">
+            Fill in the details to create
+            a permanent student record.
+          </p>
+
+          <ul class="aside-checklist">
+
+            <li>
+              <span class="check">✓</span>
+              Unique email per student
+            </li>
+
+            <li>
+              <span class="check">✓</span>
+              Instant dashboard sync
+            </li>
+
+            <li>
+              <span class="check">✓</span>
+              Edit or remove anytime
+            </li>
+
+          </ul>
+
+        </div>
+
+      </aside>
+
+      <!-- Form Card -->
+      <section class="register-card">
+
+        <div class="card-header">
+
+          <h2 class="card-title">
+            Student Registration
+          </h2>
+
+          <p class="card-subtitle">
+            Enter accurate student information.
+          </p>
+
+        </div>
+
+        <!-- Toast -->
+        <div
+          id="toast"
+          class="toast hidden"
+          role="alert"
+          aria-live="polite"
+        ></div>
+
+        <!-- Form -->
+        <form
+          id="registerForm"
+          class="reg-form"
+          novalidate
+        >
+
+          <!-- Name -->
+          <div class="field-group">
+
+            <label
+              class="field-label"
+              for="name"
+            >
+              Name
+              <span class="req-star">*</span>
+            </label>
+
+            <input
+              class="field-input"
+              id="name"
+              name="name"
+              type="text"
+              placeholder="Enter full name"
+            />
+
+            <span
+              class="field-error"
+              id="err-name"
+            ></span>
+
+          </div>
+
+          <!-- Email -->
+          <div class="field-group">
+
+            <label
+              class="field-label"
+              for="email"
+            >
+              Email
+              <span class="req-star">*</span>
+            </label>
+
+            <input
+              class="field-input"
+              id="email"
+              name="email"
+              type="email"
+              placeholder="student@example.com"
+            />
+
+            <span
+              class="field-error"
+              id="err-email"
+            ></span>
+
+          </div>
+
+          <!-- Course -->
+          <div class="field-group">
+
+            <label
+              class="field-label"
+              for="course"
+            >
+              Course
+              <span class="req-star">*</span>
+            </label>
+
+            <input
+              class="field-input"
+              id="course"
+              name="course"
+              type="text"
+              placeholder="Enter course"
+            />
+
+            <span
+              class="field-error"
+              id="err-course"
+            ></span>
+
+          </div>
+
+          <!-- Age -->
+          <div class="field-group">
+
+            <label
+              class="field-label"
+              for="age"
+            >
+              Age
+              <span class="req-star">*</span>
+            </label>
+
+            <input
+              class="field-input"
+              id="age"
+              name="age"
+              type="number"
+              min="1"
+              max="100"
+              placeholder="Enter age"
+            />
+
+            <span
+              class="field-error"
+              id="err-age"
+            ></span>
+
+          </div>
+
+          <!-- Buttons -->
+          <div class="form-actions">
+
+            <button
+              type="reset"
+              class="btn btn-ghost"
+            >
+              Clear Form
+            </button>
+
+            <button
+              type="submit"
+              class="btn btn-primary"
+              id="submitBtn"
+            >
+
+              <span class="btn-label">
+                Register Student
+              </span>
+
+              <span
+                class="btn-spinner hidden"
+                aria-hidden="true"
+              ></span>
+
+            </button>
+
+          </div>
+
+        </form>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <script src="api.js"></script>
+  <script src="register.js"></script>
+
+</body>
+</html>

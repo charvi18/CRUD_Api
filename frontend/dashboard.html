@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Dashboard — Academia</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body class="page-dashboard">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-inner">
+
+      <a href="index.html" class="nav-brand">
+        <span class="brand-icon">◈</span>
+        <span class="brand-name">Academia</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Register</a>
+        <a href="dashboard.html" class="nav-link active">Dashboard</a>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="dashboard-main">
+
+    <!-- STATS -->
+    <div class="stats-bar">
+
+      <div class="stat-chip" id="stat-total">
+        <span class="stat-num">—</span>
+        <span class="stat-label">Total Students</span>
+      </div>
+
+    </div>
+
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+
+      <div class="toolbar-left">
+        <h2 class="dashboard-title">Student Records</h2>
+      </div>
+
+      <div class="toolbar-right">
+
+        <!-- SEARCH -->
+        <div class="search-wrap">
+          <span class="search-icon">⌕</span>
+
+          <input
+            class="search-input"
+            id="searchInput"
+            type="search"
+            placeholder="Search name or email..."
+          />
+        </div>
+
+        <!-- REFRESH -->
+        <button
+          class="btn btn-primary btn-sm"
+          id="refreshBtn"
+        >
+          ↺ Refresh
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- TOAST -->
+    <div
+      id="toast"
+      class="toast hidden"
+      role="alert"
+      aria-live="polite"
+    ></div>
+
+    <!-- TABLE -->
+    <div class="table-wrapper">
+
+      <table class="students-table" id="studentsTable">
+
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Course</th>
+            <th>Age</th>
+            <th class="col-actions">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody id="tableBody">
+
+          <tr class="skeleton-row">
+            <td colspan="6">
+              <div class="skeleton-line"></div>
+            </td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+      <!-- EMPTY STATE -->
+      <div id="emptyState" class="empty-state hidden">
+
+        <span class="empty-icon">◎</span>
+
+        <p>No students found</p>
+
+        <a href="index.html" class="btn btn-primary btn-sm">
+          Register first student
+        </a>
+
+      </div>
+
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="pagination" id="pagination"></div>
+
+  </main>
+
+  <!-- EDIT MODAL -->
+  <div
+    class="modal-overlay hidden"
+    id="editModal"
+    role="dialog"
+    aria-modal="true"
+  >
+
+    <div class="modal-card">
+
+      <!-- HEADER -->
+      <div class="modal-header">
+
+        <h3 class="modal-title">
+          Edit Student
+        </h3>
+
+        <button
+          class="modal-close"
+          id="modalClose"
+        >
+          &times;
+        </button>
+
+      </div>
+
+      <!-- MODAL TOAST -->
+      <div id="modalToast" class="toast hidden"></div>
+
+      <!-- FORM -->
+      <form
+        id="editForm"
+        class="reg-form modal-form"
+        novalidate
+      >
+
+        <input type="hidden" id="editId" />
+
+        <!-- NAME -->
+        <div class="field-group">
+
+          <label class="field-label" for="editName">
+            Name
+            <span class="req-star">*</span>
+          </label>
+
+          <input
+            class="field-input"
+            id="editName"
+            type="text"
+          />
+
+          <span class="field-error" id="edit-err-name"></span>
+
+        </div>
+
+        <!-- EMAIL -->
+        <div class="field-group">
+
+          <label class="field-label" for="editEmail">
+            Email
+            <span class="req-star">*</span>
+          </label>
+
+          <input
+            class="field-input"
+            id="editEmail"
+            type="email"
+          />
+
+          <span class="field-error" id="edit-err-email"></span>
+
+        </div>
+
+        <!-- COURSE -->
+        <div class="field-group">
+
+          <label class="field-label" for="editCourse">
+            Course
+            <span class="req-star">*</span>
+          </label>
+
+          <input
+            class="field-input"
+            id="editCourse"
+            type="text"
+          />
+
+        </div>
+
+        <!-- AGE -->
+        <div class="field-group">
+
+          <label class="field-label" for="editAge">
+            Age
+            <span class="req-star">*</span>
+          </label>
+
+          <input
+            class="field-input"
+            id="editAge"
+            type="number"
+            min="1"
+            max="100"
+          />
+
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="form-actions">
+
+          <button
+            type="button"
+            class="btn btn-ghost"
+            id="cancelEdit"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="saveEditBtn"
+          >
+
+            <span class="btn-label">
+              Save Changes
+            </span>
+
+            <span
+              class="btn-spinner hidden"
+            ></span>
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+  <!-- DELETE MODAL -->
+  <div
+    class="modal-overlay hidden"
+    id="deleteModal"
+    role="dialog"
+    aria-modal="true"
+  >
+
+    <div class="modal-card modal-card--sm">
+
+      <div class="modal-header">
+
+        <h3 class="modal-title">
+          Delete Student
+        </h3>
+
+        <button
+          class="modal-close"
+          id="deleteModalClose"
+        >
+          &times;
+        </button>
+
+      </div>
+
+      <p class="delete-confirm-text">
+
+        Are you sure you want to delete
+        <strong id="deleteStudentName"></strong> ?
+
+      </p>
+
+      <div class="form-actions">
+
+        <button
+          class="btn btn-ghost"
+          id="cancelDelete"
+        >
+          Cancel
+        </button>
+
+        <button
+          class="btn btn-danger"
+          id="confirmDelete"
+        >
+
+          <span class="btn-label">
+            Yes, Delete
+          </span>
+
+          <span
+            class="btn-spinner hidden"
+          ></span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="api.js"></script>
+  <script src="dashboard.js"></script>
+
+</body>
+</html>
