@@ -19,6 +19,7 @@ export const requestLogger = (req: Request, res: Response, next: NextFunction): 
       '\x1b[32m';                           // green
     const reset = '\x1b[0m';
 
+
     console.log(
       `${statusColor}[${res.statusCode}]${reset} ${req.method} ${req.originalUrl} — ${duration}ms`,
     );

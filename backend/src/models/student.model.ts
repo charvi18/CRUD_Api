@@ -3,6 +3,7 @@
  * Handles all database operations related to students.
  */
 
+
 import { pool } from '../config/db';
 
 import {
@@ -22,7 +23,6 @@ export const findAllStudents = async (): Promise<Student[]> => {
   `;
 
   const result = await pool.query(query);
-
   return result.rows;
 };
 
@@ -39,7 +39,6 @@ export const findStudentById = async (
   `;
 
   const result = await pool.query(query, [id]);
-
   return result.rows[0] || null;
 };
 
@@ -56,7 +55,6 @@ export const findStudentByEmail = async (
   `;
 
   const result = await pool.query(query, [email]);
-
   return result.rows[0] || null;
 };
 
@@ -81,12 +79,11 @@ export const createStudent = async (
   ];
 
   const result = await pool.query(query, values);
-
   return result.rows[0];
 };
 
 // ─────────────────────────────────────────────────────────────
-// UPDATE STUDENT
+// UPDATE STUDENT (PUT + PATCH SUPPORT)
 // ─────────────────────────────────────────────────────────────
 
 export const updateStudent = async (
@@ -105,16 +102,27 @@ export const updateStudent = async (
   `;
 
   const values = [
-    dto.name,
-    dto.email,
-    dto.course,
-    dto.age,
+    dto.name ?? null,
+    dto.email ?? null,
+    dto.course ?? null,
+    dto.age ?? null,
     id,
   ];
 
   const result = await pool.query(query, values);
-
   return result.rows[0] || null;
+};
+
+// ─────────────────────────────────────────────────────────────
+// OPTIONAL: PATCH helper (not required, but cleaner design)
+// ─────────────────────────────────────────────────────────────
+
+export const patchStudent = async (
+  id: number,
+  dto: Partial<UpdateStudentDTO>,
+): Promise<Student | null> => {
+  // reuse same update logic (COALESCE already handles partial updates)
+  return await updateStudent(id, dto);
 };
 
 // ─────────────────────────────────────────────────────────────
@@ -130,6 +138,5 @@ export const deleteStudent = async (
   `;
 
   const result = await pool.query(query, [id]);
-
   return (result.rowCount ?? 0) > 0;
 };

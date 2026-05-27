@@ -36,7 +36,6 @@ export const getAllStudentsService = async (
     totalPages: number;
   };
 }> => {
-
   const {
     page = 1,
     limit = 10,
@@ -44,17 +43,14 @@ export const getAllStudentsService = async (
     course,
   } = params;
 
-  // Fetch students from database
   let students = await findAllStudents();
 
-  // Search filter
   if (search) {
     students = students.filter((student) =>
       student.name.toLowerCase().includes(search.toLowerCase()),
     );
   }
 
-  // Course filter
   if (course) {
     students = students.filter(
       (student) =>
@@ -62,7 +58,6 @@ export const getAllStudentsService = async (
     );
   }
 
-  // Pagination
   const total = students.length;
   const totalPages = Math.ceil(total / limit);
 
@@ -89,7 +84,6 @@ export const getAllStudentsService = async (
 export const getStudentByIdService = async (
   id: number,
 ): Promise<Student> => {
-
   const student = await findStudentById(id);
 
   if (!student) {
@@ -106,37 +100,29 @@ export const getStudentByIdService = async (
 export const createStudentService = async (
   dto: CreateStudentDTO,
 ): Promise<Student> => {
-
-  // Check duplicate email
   const existingStudent = await findStudentByEmail(dto.email);
 
   if (existingStudent) {
     throw new AppError('Email already exists', 409);
   }
 
-  // Create student
-  const student = await createStudent(dto);
-
-  return student;
+  return await createStudent(dto);
 };
 
 // ─────────────────────────────────────────────────────────────
-// UPDATE STUDENT
+// UPDATE STUDENT (PUT - full update)
 // ─────────────────────────────────────────────────────────────
 
 export const updateStudentService = async (
   id: number,
   dto: UpdateStudentDTO,
 ): Promise<Student> => {
-
-  // Check student exists
   const existingStudent = await findStudentById(id);
 
   if (!existingStudent) {
     throw new AppError('Student not found', 404);
   }
 
-  // Check duplicate email if updating email
   if (dto.email) {
     const emailExists = await findStudentByEmail(dto.email);
 
@@ -145,7 +131,38 @@ export const updateStudentService = async (
     }
   }
 
-  // Update student
+  const updatedStudent = await updateStudent(id, dto);
+
+  if (!updatedStudent) {
+    throw new AppError('Failed to update student', 500);
+  }
+
+  return updatedStudent;
+};
+
+// ─────────────────────────────────────────────────────────────
+// PATCH STUDENT (partial update)
+// ─────────────────────────────────────────────────────────────
+
+export const patchStudentService = async (
+  id: number,
+  dto: Partial<UpdateStudentDTO>,
+): Promise<Student> => {
+  const existingStudent = await findStudentById(id);
+
+  if (!existingStudent) {
+    throw new AppError('Student not found', 404);
+  }
+
+  // If email is being updated → check duplication
+  if (dto.email) {
+    const emailExists = await findStudentByEmail(dto.email);
+
+    if (emailExists && emailExists.id !== id) {
+      throw new AppError('Email already exists', 409);
+    }
+  }
+
   const updatedStudent = await updateStudent(id, dto);
 
   if (!updatedStudent) {
@@ -162,15 +179,12 @@ export const updateStudentService = async (
 export const deleteStudentService = async (
   id: number,
 ): Promise<void> => {
-
-  // Check student exists
   const existingStudent = await findStudentById(id);
 
   if (!existingStudent) {
     throw new AppError('Student not found', 404);
   }
 
-  // Delete student
   const deleted = await deleteStudent(id);
 
   if (!deleted) {

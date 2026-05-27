@@ -24,7 +24,7 @@ app.use(
     credentials: true,
   }),
 );
-
+//app.use--a function between request and response 
 // Parse JSON request bodies
 app.use(express.json({ limit: '10kb' }));
 // Parse URL-encoded form bodies
